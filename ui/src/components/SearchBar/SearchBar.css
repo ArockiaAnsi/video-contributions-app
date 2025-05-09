@@ -1,0 +1,16 @@
+.search-input-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  padding: 0 12px;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  max-width: 600px;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}

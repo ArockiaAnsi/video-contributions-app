@@ -4,8 +4,8 @@
       "id": 1,
       "title": "Morning News Flash",
       "description": "Breaking news and updates on global events.",
-      "startTime": "2024-05-27T06:00:00Z",
-      "endTime": "2024-05-27T06:30:00Z",
+      "startTime": "2025-05-27T06:00:00Z",
+      "endTime": "2025-05-27T06:30:00Z",
       "owner": "Global News Network"
     },
     {
@@ -20,8 +20,8 @@
       "id": 3,
       "title": "Championship Showdown",
       "description": "Highlights from the annual championship basketball game.",
-      "startTime": "2024-05-27T14:00:00Z",
-      "endTime": "2024-05-27T16:00:00Z",
+      "startTime": "2025-05-27T14:00:00Z",
+      "endTime": "2025-05-27T16:00:00Z",
       "owner": "Sports World Media"
     },
     {
@@ -52,8 +52,8 @@
       "id": 7,
       "title": "Tech Trends Today",
       "description": "Latest updates and trends in the world of technology.",
-      "startTime": "2024-05-27T10:00:00Z",
-      "endTime": "2024-05-27T10:30:00Z",
+      "startTime": "2025-05-08T08:00:00Z",
+      "endTime": "2025-05-08T22:30:00Z",
       "owner": "TechVision Media"
     },
     {

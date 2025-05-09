@@ -1,0 +1,7 @@
+# === FRONTEND (ui) ===
+ui/node_modules/
+
+# === BACKEND (server) ===
+server/venv/
+server/__pycache__/
+server/*.pyc

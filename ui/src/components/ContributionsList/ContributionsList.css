@@ -1,0 +1,56 @@
+/* Contributions List Layout */
+.contributions-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Contribution List */
+.contributions-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .contributions-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .contributions-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.contribution {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(248, 1, 6, 0.1);
+}
+
+.contribution h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.status {
+  font-weight: 600;
+}
+
+.status.active {
+  color: #ff5722;
+}
+
+.status.scheduled {
+  color: #3b82f6;
+}
+
+.status.complete {
+  color: #4caf50;
+}
