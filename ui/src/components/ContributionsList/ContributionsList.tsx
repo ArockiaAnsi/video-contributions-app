@@ -24,8 +24,6 @@ const ContributionsList = () => {
   const contributionsPerPage = 14;
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const searchQuery = searchParams.get("searchQuery") || "";
-  const owner = searchParams.get("owner") || "";
-  const status = searchParams.get("status") || "";
 
   const getStatus = (
     startTime: string,
