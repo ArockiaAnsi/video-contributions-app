@@ -15,6 +15,7 @@ interface Contribution {
 
 const ContributionsList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [allContributions, setAllContributions] = useState<Contribution[]>([]);
   const [contributions, setContributions] = useState<Contribution[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -23,6 +24,8 @@ const ContributionsList = () => {
   const contributionsPerPage = 14;
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const searchQuery = searchParams.get("searchQuery") || "";
+  const owner = searchParams.get("owner") || "";
+  const status = searchParams.get("status") || "";
 
   const getStatus = (
     startTime: string,
@@ -39,9 +42,10 @@ const ContributionsList = () => {
 
   // Fetch contributions data
   useEffect(() => {
-    const skip = (currentPage - 1) * contributionsPerPage;
+    setLoading(true);
+    setError(null);
 
-    const url = `http://localhost:8000/contributions/?skip=${skip}&limit=${contributionsPerPage}&title=${searchQuery}`;
+    const url = `http://localhost:8000/contributions/`;
 
     fetch(url)
       .then((response) => {
@@ -49,39 +53,40 @@ const ContributionsList = () => {
         return response.json();
       })
       .then((data) => {
-        if (!data.contributions || data.contributions.length === 0) {
-          setContributions([]);
-        } else {
-          const filteredData = data.contributions.map(
-            (contribution: Contribution) => ({
-              ...contribution,
-              status: getStatus(contribution.startTime, contribution.endTime),
-            }),
-          );
-          setContributions(filteredData);
-        }
-        setTotalPages(Math.ceil(data.total / contributionsPerPage));
+        const withStatus = data.contributions.map(
+          (contribution: Contribution) => ({
+            ...contribution,
+            status: getStatus(contribution.startTime, contribution.endTime),
+          }),
+        );
+        setAllContributions(withStatus);
       })
-      .catch((err) => {
-        setError("Unable to load contributions. Please try again later.");
+      .catch(() => {
+        setError("Service is temporarily unavailable. Please try again later.");
       })
       .finally(() => setLoading(false));
-  }, [currentPage, searchQuery]);
+  }, []);
 
-  const filteredContributions = contributions.filter((contribution) => {
+  useEffect(() => {
     const query = searchQuery.toLowerCase();
-    const fields = [
-      contribution.title,
-      contribution.description,
-      contribution.owner,
-      contribution.status,
-    ];
+    const filtered = allContributions.filter((contribution) => {
+      return (
+        contribution.title.toLowerCase().includes(query) ||
+        contribution.owner.toLowerCase().includes(query) ||
+        contribution.status.toLowerCase().includes(query)
+      );
+    });
 
-    return fields.some((field) => field.toLowerCase().includes(query));
-  });
+    const start = (currentPage - 1) * contributionsPerPage;
+    const end = start + contributionsPerPage;
+    const paginated = filtered.slice(start, end);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchParams({ searchQuery: e.target.value, page: "1" });
+    setContributions(paginated);
+    setTotalPages(Math.ceil(filtered.length / contributionsPerPage));
+  }, [allContributions, searchQuery, currentPage]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchParams({ searchQuery: event.target.value, page: "1" });
   };
 
   const handlePageChange = (page: number) => {
@@ -97,20 +102,28 @@ const ContributionsList = () => {
 
       {loading && <p>Loading contributions</p>}
       {error && <p className="error">{error}</p>}
-      {!loading && !error && filteredContributions.length === 0 && (
+      {!loading && !error && contributions.length === 0 && (
         <p>No contributions found.</p>
       )}
 
       <div className="contributions-list">
-        {filteredContributions.map((contribution, index) => (
+        {contributions.map((contribution, index) => (
           <div key={index} className="contribution">
             <h3>{contribution.title}</h3>
             <p>{contribution.description}</p>
-            <p>Start: {new Date(contribution.startTime).toLocaleString()}</p>
-            <p>End: {new Date(contribution.endTime).toLocaleString()}</p>
-            <p>Owner: {contribution.owner}</p>
             <p>
-              Status:{" "}
+              <span className="label">Start:</span>{" "}
+              {new Date(contribution.startTime).toLocaleString()}
+            </p>
+            <p>
+              <span className="label">End:</span>{" "}
+              {new Date(contribution.endTime).toLocaleString()}
+            </p>
+            <p>
+              <span className="label">Owner:</span> {contribution.owner}
+            </p>
+            <p>
+              <span className="label">Status: </span>
               <span className={`status ${contribution.status.toLowerCase()}`}>
                 {contribution.status}
               </span>
@@ -119,7 +132,7 @@ const ContributionsList = () => {
         ))}
       </div>
 
-      {!loading && !error && filteredContributions.length > 0 && (
+      {!loading && !error && contributions.length > 0 && (
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

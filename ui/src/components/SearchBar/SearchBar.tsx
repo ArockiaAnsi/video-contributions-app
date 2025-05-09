@@ -6,10 +6,7 @@ interface SearchBarProps {
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({
-  searchQuery,
-  onSearchChange,
-}) => {
+const SearchBar = ({ searchQuery, onSearchChange }: SearchBarProps) => {
   return (
     <div className="search-input-wrapper">
       <input

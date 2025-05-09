@@ -52,7 +52,7 @@ describe("ContributionsList Component", () => {
 
     await waitFor(() =>
       expect(
-        screen.getByText(/unable to load contributions/i),
+        screen.getByText(/service is temporarily unavailable/i),
       ).toBeInTheDocument(),
     );
   });
