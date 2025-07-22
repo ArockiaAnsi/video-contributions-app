@@ -8,4 +8,4 @@
 
 `uvicorn main:app --reload`
 
-Default will LISTEN on port localhost:8000
+Default will listen on port localhost:8000
